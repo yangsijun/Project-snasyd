@@ -1,3 +1,9 @@
+# Project-snasyd
+AI for Connect6 (2022 Handong SW Festival)
+
+------------------
+<https://github.com/ARISE-Handong/CONNSIX>
+
 # JAVA API for CONNSIX
 
 ## About
