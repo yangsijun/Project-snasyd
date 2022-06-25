@@ -1,156 +1,151 @@
-# Project-snasyd
-AI for Connect6 (2022 Handong SW Festival)
-
-------------------
-
 # JAVA API for CONNSIX
 
 ## About
 This API is for Connect Six programs developed with the Java programming language. Its functions connect and communicate with the single mode server.
 <br>
-ÀÌ API´Â ÀÚ¹Ù ÇÁ·Î±×·¡¹Ö ¾ğ¾î·Î °³¹ßÇÑ À°¸ñ AI¸¦ ÇÁ·Î±×·¥µéÀ» À§ÇÑ APIÀÌ´Ù. ¸ğµç methodµéÀº ½Ì±Û ¸ğµå ¼­¹ö¿Í ¿¬°áÇÏ°í ¼ÒÅëÇÏ±â À§ÇÑ ±â´ÉµéÀÌ ±¸ÇöµÇ¾îÀÖ´Ù.
+ì´ APIëŠ” ìë°” í”„ë¡œê·¸ë˜ë° ì–¸ì–´ë¡œ ê°œë°œí•œ ìœ¡ëª© AIë¥¼ í”„ë¡œê·¸ë¨ë“¤ì„ ìœ„í•œ APIì´ë‹¤. ëª¨ë“  methodë“¤ì€ ì‹±ê¸€ ëª¨ë“œ ì„œë²„ì™€ ì—°ê²°í•˜ê³  ì†Œí†µí•˜ê¸° ìœ„í•œ ê¸°ëŠ¥ë“¤ì´ êµ¬í˜„ë˜ì–´ìˆë‹¤.
 
 ## Coordinate System
 The coordinate is consisted with an alphabet character and a number. The columns are notated with `A` ~ `T` with `I` not included. The rows are notated with `01` ~ `19`. The one digit numbers may or may not have a leading 0. To express more than one coordinates, the coordinates should be separated with `:`.
 <br>
-¹ÙµÏÆÇÀÇ ÁÂÇ¥´Â alphabet character ÇÏ³ª¿Í ¼ıÀÚ·Î Ç¥±âÇÑ´Ù. ¹ÙµÏÆÇÀÇ ¼¼·ÎÁÙÀº alphabet `A` ºÎÅÍ `T` ·Î Ç¥±âÇÏ°í ÀÌ¶§ `I`´Â Æ÷ÇÔµÇÁö ¾Ê´Â´Ù.
-°¡·ÎÁÙÀº ¼ıÀÚ `01` ~ `19`·Î Ç¥±âÇÏ¸ç 10 ÀÌÇÏÀÇ ¼ıÀÚµéÀº ½ÊÀÇ ÀÚ¸®¸¦ 0À¸·Î Ç¥±âÇØµµ ¾ÈÇØµµµÈ´Ù.
-ÇÏ³ªÀÇ ÁÂÇ¥´Â ÀÌ µÎ Á¤º¸¸¦ ÇÕÄ£ StringÀ¸·Î Ç¥ÇöÇØ¾ßÇÑ´Ù.
-¿©·¯ ÁÂÇ¥µéÀ» Ç¥±âÇÏ±â À§ÇØ¼­´Â ÁÂÇ¥µé »çÀÌ¿¡ `:`¸¦ ³Ö¾î ÇÏ³ªÀÇ StringÀ¸·Î ¸¸µé¾î¾ßÇÑ´Ù.
+ë°”ë‘‘íŒì˜ ì¢Œí‘œëŠ” alphabet character í•˜ë‚˜ì™€ ìˆ«ìë¡œ í‘œê¸°í•œë‹¤. ë°”ë‘‘íŒì˜ ì„¸ë¡œì¤„ì€ alphabet `A` ë¶€í„° `T` ë¡œ í‘œê¸°í•˜ê³  ì´ë•Œ `I`ëŠ” í¬í•¨ë˜ì§€ ì•ŠëŠ”ë‹¤.
+ê°€ë¡œì¤„ì€ ìˆ«ì `01` ~ `19`ë¡œ í‘œê¸°í•˜ë©° 10 ì´í•˜ì˜ ìˆ«ìë“¤ì€ ì‹­ì˜ ìë¦¬ë¥¼ 0ìœ¼ë¡œ í‘œê¸°í•´ë„ ì•ˆí•´ë„ëœë‹¤.
+í•˜ë‚˜ì˜ ì¢Œí‘œëŠ” ì´ ë‘ ì •ë³´ë¥¼ í•©ì¹œ Stringìœ¼ë¡œ í‘œí˜„í•´ì•¼í•œë‹¤.
+ì—¬ëŸ¬ ì¢Œí‘œë“¤ì„ í‘œê¸°í•˜ê¸° ìœ„í•´ì„œëŠ” ì¢Œí‘œë“¤ ì‚¬ì´ì— `:`ë¥¼ ë„£ì–´ í•˜ë‚˜ì˜ Stringìœ¼ë¡œ ë§Œë“¤ì–´ì•¼í•œë‹¤.
 * Ex) `A01`, `A1`, `B03`, `B3`, `J12`, `A01:E13`, `E11:J18:K10:T19`
-<br>
-`Strict notation`: coorinate with leading 0.
+  <br>
+  `Strict notation`: coorinate with leading 0.
 * Ex) `A01`, `C04`
-<br>
-`Extended notation`: coorinate without leading 0.
+  <br>
+  `Extended notation`: coorinate without leading 0.
 * Ex) `A1`, `C4`
-<br>
-<br>
-Below is an image that explains the coordinate system.
-<br>
-¹ØÀÇ ÀÌ¹ÌÁö´Â ¾Õ¼­ ¼³¸íÇÑ ÁÂÇ¥ ½Ã½ºÅÛÀ» ³ªÅ¸³½ °ÍÀÌ´Ù.
-<br>
-<img src="https://user-images.githubusercontent.com/54518241/137690844-2664cb7a-2bed-40ca-bdd5-e8fa87df5b42.png" alt="coordinate system" width="500"/>
+  <br>
+  <br>
+  Below is an image that explains the coordinate system.
+  <br>
+  ë°‘ì˜ ì´ë¯¸ì§€ëŠ” ì•ì„œ ì„¤ëª…í•œ ì¢Œí‘œ ì‹œìŠ¤í…œì„ ë‚˜íƒ€ë‚¸ ê²ƒì´ë‹¤.
+  <br>
+  <img src="https://user-images.githubusercontent.com/54518241/137690844-2664cb7a-2bed-40ca-bdd5-e8fa87df5b42.png" alt="coordinate system" width="500"/>
 
 ## Methods
 1. ***public ConnectSix(String ip, int port, String color)***   
-Creates an instance of the class ConnectSix and connects to the single mode server.
-When success, the field `redStones` will contain the positions of the red stones as a String type.
-The positions of the red stones will follow the `strict notation` explained above.
-On connection failure, the constructor will throw ConnSixException.
-If there is no red stones to begin with, the field `redStones` will contain the null value.
-The user must make a instance of the class using this constructor in order to use the single mode server and other methods.   
-ConnectSix classÀÇ °´Ã¼¸¦ ¸¸µé¾îÁÖ´Â µ¿½Ã¿¡ ½Ì±Û ¸ğµå ¼­¹ö¿¡ ¿¬°áÇØÁØ´Ù. °´Ã¼¸¦ »ı¼ºÇÏ´Â °Í¿¡ ¼º°øÇÏ¸é `redStones`¶ó´Â field ¾È¿¡ ¹®ÀÚ¿­·ÎµÈ Àûµ¹ÀÇ ÁÂÇ¥¸¦ ÀúÀåÇÑ´Ù.
-ÀÌ¶§ Àûµ¹ÀÇ ÁÂÇ¥´Â À§¿¡¼­ ¼³¸íÇÑ `strict notation`¸¦ µû¸¥´Ù. °´Ã¼¸¦ »ı¼ºÇÏ´Â °ÍÀÌ ½ÇÆĞÇßÀ» °æ¿ì ConnSixExceptionÀ» ´øÁø´Ù.
-Àûµ¹ÀÌ ¾ø´Â °æ¿ì, `redStones`¿¡´Â null °ªÀÌ µé¾î°£´Ù.
-»ç¿ëÀÚ´Â Á¦ÀÏ ¸ÕÀú ÀÌ constructor¸¦ ÀÌ¿ëÇØ¼­ classÀÇ °´Ã¼¸¦ ¸¸µé¾î¾ß¸¸ ½Ì±Û ¸ğµå ¼­¹ö¿Í ¿¬°áÇÏ°í ´Ù¸¥ methodµéÀ» »ç¿ëÇÒ ¼ö ÀÖ´Ù.
-<br><br>
-__Parameter__
+   Creates an instance of the class ConnectSix and connects to the single mode server.
+   When success, the field `redStones` will contain the positions of the red stones as a String type.
+   The positions of the red stones will follow the `strict notation` explained above.
+   On connection failure, the constructor will throw ConnSixException.
+   If there is no red stones to begin with, the field `redStones` will contain the null value.
+   The user must make a instance of the class using this constructor in order to use the single mode server and other methods.   
+   ConnectSix classì˜ ê°ì²´ë¥¼ ë§Œë“¤ì–´ì£¼ëŠ” ë™ì‹œì— ì‹±ê¸€ ëª¨ë“œ ì„œë²„ì— ì—°ê²°í•´ì¤€ë‹¤. ê°ì²´ë¥¼ ìƒì„±í•˜ëŠ” ê²ƒì— ì„±ê³µí•˜ë©´ `redStones`ë¼ëŠ” field ì•ˆì— ë¬¸ìì—´ë¡œëœ ì ëŒì˜ ì¢Œí‘œë¥¼ ì €ì¥í•œë‹¤.
+   ì´ë•Œ ì ëŒì˜ ì¢Œí‘œëŠ” ìœ„ì—ì„œ ì„¤ëª…í•œ `strict notation`ë¥¼ ë”°ë¥¸ë‹¤. ê°ì²´ë¥¼ ìƒì„±í•˜ëŠ” ê²ƒì´ ì‹¤íŒ¨í–ˆì„ ê²½ìš° ConnSixExceptionì„ ë˜ì§„ë‹¤.
+   ì ëŒì´ ì—†ëŠ” ê²½ìš°, `redStones`ì—ëŠ” null ê°’ì´ ë“¤ì–´ê°„ë‹¤.
+   ì‚¬ìš©ìëŠ” ì œì¼ ë¨¼ì € ì´ constructorë¥¼ ì´ìš©í•´ì„œ classì˜ ê°ì²´ë¥¼ ë§Œë“¤ì–´ì•¼ë§Œ ì‹±ê¸€ ëª¨ë“œ ì„œë²„ì™€ ì—°ê²°í•˜ê³  ë‹¤ë¥¸ methodë“¤ì„ ì‚¬ìš©í•  ìˆ˜ ìˆë‹¤.
+   <br><br>
+   __Parameter__
     - `ip`   
-    String type that contains the ip information.   
-    ip Á¤º¸¸¦ °¡Áö°í ÀÖ´Â ¹®ÀÚ¿­.   
+      String type that contains the ip information.   
+      ip ì •ë³´ë¥¼ ê°€ì§€ê³  ìˆëŠ” ë¬¸ìì—´.
         - Ex) "127.0.0.1"
     - `port`   
-    Integer type that contains the port number information.   
-    port Á¤º¸¸¦ °¡Áö°í ÀÖ´Â Á¤¼ö.
+      Integer type that contains the port number information.   
+      port ì •ë³´ë¥¼ ê°€ì§€ê³  ìˆëŠ” ì •ìˆ˜.
         - Ex) 8080
     - `color`   
-    String type that contains the color of the stone that the client will be using.   
-    »ç¿ëÀÚ°¡ »ç¿ëÇÒ µ¹ÀÇ »ö Á¤º¸¸¦ °¡Áö°í ÀÖ´Â ¹®ÀÚ¿­.
+      String type that contains the color of the stone that the client will be using.   
+      ì‚¬ìš©ìê°€ ì‚¬ìš©í•  ëŒì˜ ìƒ‰ ì •ë³´ë¥¼ ê°€ì§€ê³  ìˆëŠ” ë¬¸ìì—´.
         - `White` `Black`
-       
-    __Throws__
+
+   __Throws__
     - `ConnSixException`   
-    Throws an exception that happens when the network connection fail.
-    Connection failure can happen because of ip, port information error, underlying protocol error and IOException related to socket creation.   
-    ³×Æ®¿öÅ© ¿¬°áÀÌ ½ÇÆĞÇÏ¸é `ConnSixException` ¿¹¿Ü¸¦ ´øÁø´Ù. ¿¬°á ½ÇÆĞ´Â Àß¸øµÈ ip, port Á¤º¸, ÇÁ·ÎÅäÄİ ¿¡·¯ ±×¸®°í socket »ı¼º °ü·Ã IOException ¶§¹®¿¡ ¹ß»ıÇÒ ¼ö ÀÖ´Ù.
-   
+      Throws an exception that happens when the network connection fail.
+      Connection failure can happen because of ip, port information error, underlying protocol error and IOException related to socket creation.   
+      ë„¤íŠ¸ì›Œí¬ ì—°ê²°ì´ ì‹¤íŒ¨í•˜ë©´ `ConnSixException` ì˜ˆì™¸ë¥¼ ë˜ì§„ë‹¤. ì—°ê²° ì‹¤íŒ¨ëŠ” ì˜ëª»ëœ ip, port ì •ë³´, í”„ë¡œí† ì½œ ì—ëŸ¬ ê·¸ë¦¬ê³  socket ìƒì„± ê´€ë ¨ IOException ë•Œë¬¸ì— ë°œìƒí•  ìˆ˜ ìˆë‹¤.
+
 2. ***public String letsConnect(String ip, int port, String color)***   
-Connects to the single mode server and gets the red stones' positions from the single mode server.
-This function will be called from the constructor method.
-Therefore making an instance of this class will automatically connect to the single mode server by calling this function.   
-½Ì±Û ¸ğµå ¼­¹ö¿¡ ¿¬°áÇØÁÖ°í field `redStones`¿¡ Àûµ¹ÀÇ À§Ä¡¸¦ ³Ö¾îÁØ´Ù. ÀÌ method´Â constructor¿¡¼­ ºÎ¸£±â ¶§¹®¿¡ µû·Î ºÒ·¯ÁÙ ÇÊ¿ä°¡ ¾ø´Ù.
-<br><br>
-__Parameter__
+   Connects to the single mode server and gets the red stones' positions from the single mode server.
+   This function will be called from the constructor method.
+   Therefore making an instance of this class will automatically connect to the single mode server by calling this function.   
+   ì‹±ê¸€ ëª¨ë“œ ì„œë²„ì— ì—°ê²°í•´ì£¼ê³  field `redStones`ì— ì ëŒì˜ ìœ„ì¹˜ë¥¼ ë„£ì–´ì¤€ë‹¤. ì´ methodëŠ” constructorì—ì„œ ë¶€ë¥´ê¸° ë•Œë¬¸ì— ë”°ë¡œ ë¶ˆëŸ¬ì¤„ í•„ìš”ê°€ ì—†ë‹¤.
+   <br><br>
+   __Parameter__
     - `ip`   
-    String type that contains the ip information.   
-    ip Á¤º¸¸¦ °¡Áö°í ÀÖ´Â ¹®ÀÚ¿­.   
+      String type that contains the ip information.   
+      ip ì •ë³´ë¥¼ ê°€ì§€ê³  ìˆëŠ” ë¬¸ìì—´.
         - Ex) "127.0.0.1"
     - `port`   
-    Integer type that contains the port number information.   
-    port Á¤º¸¸¦ °¡Áö°í ÀÖ´Â Á¤¼ö.
+      Integer type that contains the port number information.   
+      port ì •ë³´ë¥¼ ê°€ì§€ê³  ìˆëŠ” ì •ìˆ˜.
         - Ex) 8080
     - `color`   
-    String type that contains the color of the stone that the client will be using.   
-    »ç¿ëÀÚ°¡ »ç¿ëÇÒ µ¹ÀÇ »ö Á¤º¸¸¦ °¡Áö°í ÀÖ´Â ¹®ÀÚ¿­.
-        - `White` `Black`   
-       
-    __Returns__
+      String type that contains the color of the stone that the client will be using.   
+      ì‚¬ìš©ìê°€ ì‚¬ìš©í•  ëŒì˜ ìƒ‰ ì •ë³´ë¥¼ ê°€ì§€ê³  ìˆëŠ” ë¬¸ìì—´.
+        - `White` `Black`
+
+   __Returns__
     - A String that contatins the positions of the red stones. The positions will follow the `strict notation` explained above.   
-    Àûµ¹ÀÇ ÁÂÇ¥ Á¤º¸°¡ ´ã±ä ¹®ÀÚ¿­À» ¸®ÅÏÇÑ´Ù. ÀÌ ÁÂÇ¥µéÀº À§¿¡¼­ ¼³¸íÇÑ `strict notation`À» µû¸¥´Ù.   
-       
-    __Throws__
+      ì ëŒì˜ ì¢Œí‘œ ì •ë³´ê°€ ë‹´ê¸´ ë¬¸ìì—´ì„ ë¦¬í„´í•œë‹¤. ì´ ì¢Œí‘œë“¤ì€ ìœ„ì—ì„œ ì„¤ëª…í•œ `strict notation`ì„ ë”°ë¥¸ë‹¤.
+
+   __Throws__
     - `ConnSixException` Throws an exception that happens when the network connection fail.
-    Connection failure can happen because of ip, port information error, underlying protocol error and IOException related to socket creation.   
-    ³×Æ®¿öÅ© ¿¬°áÀÌ ½ÇÆĞÇÏ¸é `ConnSixException` ¿¹¿Ü¸¦ ´øÁø´Ù. ¿¬°á ½ÇÆĞ´Â Àß¸øµÈ ip, port Á¤º¸, ÇÁ·ÎÅäÄİ ¿¡·¯ ±×¸®°í socket »ı¼º °ü·Ã IOException ¶§¹®¿¡ ¹ß»ıÇÒ ¼ö ÀÖ´Ù.   
+      Connection failure can happen because of ip, port information error, underlying protocol error and IOException related to socket creation.   
+      ë„¤íŠ¸ì›Œí¬ ì—°ê²°ì´ ì‹¤íŒ¨í•˜ë©´ `ConnSixException` ì˜ˆì™¸ë¥¼ ë˜ì§„ë‹¤. ì—°ê²° ì‹¤íŒ¨ëŠ” ì˜ëª»ëœ ip, port ì •ë³´, í”„ë¡œí† ì½œ ì—ëŸ¬ ê·¸ë¦¬ê³  socket ìƒì„± ê´€ë ¨ IOException ë•Œë¬¸ì— ë°œìƒí•  ìˆ˜ ìˆë‹¤.
 
 3. ***public String drawAndRead(String draw)***   
-Sends the position of the user's next move to the single mode server and returns the opponent's next move.
-The first move of black must be "K10" and the first move of white must be "", an empty String.
-If the user sends an invalid coordinate, an error message will be sent to the single mode server.
-All positions will follow the position notation explained above.   
-»ç¿ëÀÚÀÇ ´ÙÀ½ ¼ö¸¦ ½Ì±Û ¸ğµå ¼­¹ö¿¡ º¸³»°í »ó´ë¹æÀÇ ´ÙÀ½ ¼ö¸¦ ¸®ÅÏÇÑ´Ù.
-Èæµ¹ÀÇ Ã¹ ¼ö´Â ¹«Á¶°Ç `K10`ÀÌ¾î¾ßÇÏ°í ¹éµ¹ÀÇ Ã¹ ¼ö´Â ¹«Á¶°Ç ºó ¹®ÀÚ¿­ÀÌ¾î¾ßÇÑ´Ù.
-¸¸¾à »ç¿ëÀÚ°¡ À¯È¿ÇÏÁö ¾ÊÀº ÁÂÇ¥¸¦ º¸³½´Ù¸é »ó´ë¹æÀÇ ´ÙÀ½ ¼ö°¡ ¾Æ´Ñ ¿¡·¯ ¸Ş¼¼Áö°¡ ¸®ÅÏµÉ °ÍÀÌ´Ù.
-¸ğµç ÁÂÇ¥µéÀº À§¿¡¼­ ¼³¸íÇÑ ÁÂÇ¥ Ç¥±â¹ıÀ» µû¶ó¾ßÇÑ´Ù.
+   Sends the position of the user's next move to the single mode server and returns the opponent's next move.
+   The first move of black must be "K10" and the first move of white must be "", an empty String.
+   If the user sends an invalid coordinate, an error message will be sent to the single mode server.
+   All positions will follow the position notation explained above.   
+   ì‚¬ìš©ìì˜ ë‹¤ìŒ ìˆ˜ë¥¼ ì‹±ê¸€ ëª¨ë“œ ì„œë²„ì— ë³´ë‚´ê³  ìƒëŒ€ë°©ì˜ ë‹¤ìŒ ìˆ˜ë¥¼ ë¦¬í„´í•œë‹¤.
+   í‘ëŒì˜ ì²« ìˆ˜ëŠ” ë¬´ì¡°ê±´ `K10`ì´ì–´ì•¼í•˜ê³  ë°±ëŒì˜ ì²« ìˆ˜ëŠ” ë¬´ì¡°ê±´ ë¹ˆ ë¬¸ìì—´ì´ì–´ì•¼í•œë‹¤.
+   ë§Œì•½ ì‚¬ìš©ìê°€ ìœ íš¨í•˜ì§€ ì•Šì€ ì¢Œí‘œë¥¼ ë³´ë‚¸ë‹¤ë©´ ìƒëŒ€ë°©ì˜ ë‹¤ìŒ ìˆ˜ê°€ ì•„ë‹Œ ì—ëŸ¬ ë©”ì„¸ì§€ê°€ ë¦¬í„´ë  ê²ƒì´ë‹¤.
+   ëª¨ë“  ì¢Œí‘œë“¤ì€ ìœ„ì—ì„œ ì„¤ëª…í•œ ì¢Œí‘œ í‘œê¸°ë²•ì„ ë”°ë¼ì•¼í•œë‹¤.
     1. `BADCOORD`
         - The coordinate if out of bounds.   
-        ¹üÀ§¸¦ ¹ş¾î³­ ÁÂÇ¥ÀÏ °æ¿ì
+          ë²”ìœ„ë¥¼ ë²—ì–´ë‚œ ì¢Œí‘œì¼ ê²½ìš°
     2. `NOTEMPTY`
         - The position is already occupied by another stone.   
-        ºñ¾îÀÖÁö ¾ÊÀº À§Ä¡ÀÇ ÁÂÇ¥ÀÏ °æ¿ì
+          ë¹„ì–´ìˆì§€ ì•Šì€ ìœ„ì¹˜ì˜ ì¢Œí‘œì¼ ê²½ìš°
     3. `BADINPUT`
         - The first move is not `K10` for black or an empty string for white.   
-        Èæµ¹ÀÇ Ã¹ ¼ö°¡ `K10`ÀÌ ¾Æ´Ï°Å³ª ¹éµ¹ÀÇ Ã¹ ¼ö°¡ ºó ¹®ÀÚ¿­ÀÌ ¾Æ´Ñ °æ¿ì
+          í‘ëŒì˜ ì²« ìˆ˜ê°€ `K10`ì´ ì•„ë‹ˆê±°ë‚˜ ë°±ëŒì˜ ì²« ìˆ˜ê°€ ë¹ˆ ë¬¸ìì—´ì´ ì•„ë‹Œ ê²½ìš°
         - The moves other than the first move don't hold two positions.   
-        Ã¹ ¼ö°¡ ¾Æ´Ñµ¥ ¼ö¸¦ µÎ°³ º¸³»Áö ¾ÊÀº °æ¿ì
+          ì²« ìˆ˜ê°€ ì•„ë‹Œë° ìˆ˜ë¥¼ ë‘ê°œ ë³´ë‚´ì§€ ì•Šì€ ê²½ìš°
         - Any other inputs that doesn't follow the position notation.   
-        ±× ¿Ü ÁÂÇ¥ Ç¥±â¹ıÀ» µû¸£Áö ¾Ê´Â ÀÔ·ÂÀÏ °æ¿ì   
-           
-    __Parameter__   
+          ê·¸ ì™¸ ì¢Œí‘œ í‘œê¸°ë²•ì„ ë”°ë¥´ì§€ ì•ŠëŠ” ì…ë ¥ì¼ ê²½ìš°
+
+   __Parameter__
     - `draw`   
-    The position where the user will put their stones.   
-    »ç¿ëÀÚÀÇ ´ÙÀ½ ¼ö°¡ Ç¥±âµÈ ¹®ÀÚ¿­   
-       
-    __Returns__
+      The position where the user will put their stones.   
+      ì‚¬ìš©ìì˜ ë‹¤ìŒ ìˆ˜ê°€ í‘œê¸°ëœ ë¬¸ìì—´
+
+   __Returns__
     - When the game continues, the position of the opponent's move, expressed in `strict notation`, will be returned.
-    When the game is over, the return value will be `WIN`, `LOSE` or `TIE`.   
-    °ÔÀÓÀÌ ÁøÇàµÉ °æ¿ì, `strict noation`·Î Ç¥±âµÈ »ó´ë¹æÀÇ ´ÙÀ½ ¼ö¸¦ ¸®ÅÏÇÑ´Ù.
-    °ÔÀÓÀÌ ³¡³­ °æ¿ì, °ÔÀÓ °á°ú¿¡ µû¶ó `WIN`, `LOSE` È¤Àº `TIE`ÀÌ ¸®ÅÏµÈ´Ù.   
-       
-    __Throws__
+      When the game is over, the return value will be `WIN`, `LOSE` or `TIE`.   
+      ê²Œì„ì´ ì§„í–‰ë  ê²½ìš°, `strict noation`ë¡œ í‘œê¸°ëœ ìƒëŒ€ë°©ì˜ ë‹¤ìŒ ìˆ˜ë¥¼ ë¦¬í„´í•œë‹¤.
+      ê²Œì„ì´ ëë‚œ ê²½ìš°, ê²Œì„ ê²°ê³¼ì— ë”°ë¼ `WIN`, `LOSE` í˜¹ì€ `TIE`ì´ ë¦¬í„´ëœë‹¤.
+
+   __Throws__
     - `ConnSixException`   
-    Throws an exception when communication with the single mode server failed.   
-    ½Ì±Û ¸ğµå ¼­¹ö¿ÍÀÇ Åë½ÅÀÌ ½ÇÆĞÇßÀ» °æ¿ì ¿¹¿Ü¸¦ ´øÁø´Ù.
+      Throws an exception when communication with the single mode server failed.   
+      ì‹±ê¸€ ëª¨ë“œ ì„œë²„ì™€ì˜ í†µì‹ ì´ ì‹¤íŒ¨í–ˆì„ ê²½ìš° ì˜ˆì™¸ë¥¼ ë˜ì§„ë‹¤.
 
 4. ***public String getStoneAt(String position)***   
-Returns the current state of the position.   
-ÀÔ·ÂÀ¸·Î º¸³½ ÁÂÇ¥ÀÇ ÇöÀç »óÅÂ¸¦ ¸®ÅÏÇÑ´Ù.
-<br><br>
-__Parameter__
+   Returns the current state of the position.   
+   ì…ë ¥ìœ¼ë¡œ ë³´ë‚¸ ì¢Œí‘œì˜ í˜„ì¬ ìƒíƒœë¥¼ ë¦¬í„´í•œë‹¤.
+   <br><br>
+   __Parameter__
     - `position`   
-    The position of the state that the user is curious about.   
-    »ç¿ëÀÚ°¡ ¹°¾îº¸´Â »óÅÂÀÇ À§Ä¡ ÁÂÇ¥   
-       
-    __Returns__
+      The position of the state that the user is curious about.   
+      ì‚¬ìš©ìê°€ ë¬¼ì–´ë³´ëŠ” ìƒíƒœì˜ ìœ„ì¹˜ ì¢Œí‘œ
+
+   __Returns__
     - Returns a String that can be `EMPTY`, `WHITE`, `BLACK` or `RED` according to the state of the position.
-    When the position does not follow the position notation, the function will return the null value.   
-    ÁÂÇ¥ÀÇ »óÅÂ¿¡ µû¶ó `EMPTY`, `WHITE`, `BLACK` È¤Àº `RED` °ªÀÇ ¹®ÀÚ¿­À» ¸®ÅÏÇÑ´Ù.
-    ÀÔ·Â ÁÂÇ¥°¡ ÁÂÇ¥ Ç¥±â¹ıÀ» µû¸£Áö ¾Ê´Â °æ¿ì null °ªÀ» ¸®ÅÏÇÑ´Ù.   
+      When the position does not follow the position notation, the function will return the null value.   
+      ì¢Œí‘œì˜ ìƒíƒœì— ë”°ë¼ `EMPTY`, `WHITE`, `BLACK` í˜¹ì€ `RED` ê°’ì˜ ë¬¸ìì—´ì„ ë¦¬í„´í•œë‹¤.
+      ì…ë ¥ ì¢Œí‘œê°€ ì¢Œí‘œ í‘œê¸°ë²•ì„ ë”°ë¥´ì§€ ì•ŠëŠ” ê²½ìš° null ê°’ì„ ë¦¬í„´í•œë‹¤.
 
 ## Dummy AI
 There is an example that randomly generates 2 coordinates and sends to the single mkode server.
 Due to the fact that it just generates coordinates, it may send invalid coordinates and end the game.   
-'dummyAi'¶ó´Â Æú´õ ¾È¿¡´Â ÀÌ API¸¦ »ç¿ëÇÏ´Â ¿¹½Ã ÇÁ·Î±×·¥ÀÌ ÀÖ´Ù.
-ÀÌ ÇÁ·Î±×·¥Àº ¹«ÀÛÀ§·Î µÎ°³ÀÇ ÁÂÇ¥¸¦ »ı¼ºÇØ³» API³»ÀÇ methodµéÀ» ÀÌ¿ëÇØ ½Ì±Û ¸ğµå ¼­¹ö¿¡ º¸³½´Ù.
-ÀÌ¶§ ¹«ÀÛÀ§·Î »ı¼ºÇÏ´Â µÎ ÁÂÇ¥´Â À¯È¿ÇÑ ÁÂÇ¥ÀÎÁö¸¦ È®ÀÎÇÏÁö ¾Ê±â ¶§¹®¿¡ À¯È¿ÇÏÁö ¾ÊÀº ÁÂÇ¥·Î ÀÎÇØ ½Ì±Û ¸ğµå ¼­¹ö¿¡¼­ °ÔÀÓÀ» Á¾·áÇÒ ¼ö ÀÖ´Ù.
+'dummyAi'ë¼ëŠ” í´ë” ì•ˆì—ëŠ” ì´ APIë¥¼ ì‚¬ìš©í•˜ëŠ” ì˜ˆì‹œ í”„ë¡œê·¸ë¨ì´ ìˆë‹¤.
+ì´ í”„ë¡œê·¸ë¨ì€ ë¬´ì‘ìœ„ë¡œ ë‘ê°œì˜ ì¢Œí‘œë¥¼ ìƒì„±í•´ë‚´ APIë‚´ì˜ methodë“¤ì„ ì´ìš©í•´ ì‹±ê¸€ ëª¨ë“œ ì„œë²„ì— ë³´ë‚¸ë‹¤.
+ì´ë•Œ ë¬´ì‘ìœ„ë¡œ ìƒì„±í•˜ëŠ” ë‘ ì¢Œí‘œëŠ” ìœ íš¨í•œ ì¢Œí‘œì¸ì§€ë¥¼ í™•ì¸í•˜ì§€ ì•Šê¸° ë•Œë¬¸ì— ìœ íš¨í•˜ì§€ ì•Šì€ ì¢Œí‘œë¡œ ì¸í•´ ì‹±ê¸€ ëª¨ë“œ ì„œë²„ì—ì„œ ê²Œì„ì„ ì¢…ë£Œí•  ìˆ˜ ìˆë‹¤.
