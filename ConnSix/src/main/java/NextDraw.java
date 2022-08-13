@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class NextDraw {
     final static private int EMPTY = 0;
@@ -15,10 +13,10 @@ public class NextDraw {
     public final static int DIA_RTLB = 3;
     public final static int DRAW = 3;
     public final static int NOT_OVER = -1;
-    public final static int MAX_DEPTH = 3;
-    public final static int MAX_BREATH = 4;
-    public final static int MAX_DEFENSE = 7;
-    public final static int MAX_OFFENSE = 7;
+    public final static int MAX_DEPTH = 5;
+    public final static int MAX_BREATH = 2;
+    public final static int MAX_DEFENSE = 4;
+    public final static int MAX_OFFENSE = 5;
 
     private int[][] board;
     BoardBitsConverter boardBitsConverter;
@@ -91,18 +89,18 @@ public class NextDraw {
         boardBitsConverter = new BoardBitsConverter(board);
         boardBits = boardBitsConverter.getBoardBits();
 
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 19; j++) {
-                System.out.println(Long.toBinaryString(boardBits[i][j]));
-            }
-            System.out.println();
-        }
-        for (int i = 2; i < 4; i++) {
-            for (int j = 0; j < 37; j++) {
-                System.out.println(Long.toBinaryString(boardBits[i][j]));
-            }
-            System.out.println();
-        }
+//        for (int i = 0; i < 2; i++) {
+//            for (int j = 0; j < 19; j++) {
+//                System.out.println(Long.toBinaryString(boardBits[i][j]));
+//            }
+//            System.out.println();
+//        }
+//        for (int i = 2; i < 4; i++) {
+//            for (int j = 0; j < 37; j++) {
+//                System.out.println(Long.toBinaryString(boardBits[i][j]));
+//            }
+//            System.out.println();
+//        }
     }
 
 //    public String getNextDraw() {
@@ -163,7 +161,7 @@ public class NextDraw {
 //        int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
 //        ExecutorService executor = Executors.newFixedThreadPool(numOfCoresInMyCPU);
 
-        minimax(board, 0, myColor);
+        minimax(board, 0, myColor, -Double.MAX_VALUE, Double.MAX_VALUE);
 
         System.out.println("nextDrawStones: " + nextMove.stone1.x + " " + nextMove.stone1.y);
         if (nextMove.stone2 != null) {
@@ -418,162 +416,6 @@ public class NextDraw {
 
         List<Move> availableMoves = new ArrayList<>();
 
-//        // find available moves
-//        // Defensive
-//        ArrayList<StoneAndScore> availableDefense = new ArrayList<>();
-//        for (int i = 0; i < 19; i++) {
-//            for (int j = 0; j < 19; j++) {
-//                if (board[i][j] == EMPTY) {
-//                    double eval = getEvaluation(board, new Stone(j, i), enemyColor);
-//                    if (availableDefense.size() == 0) {
-//                        availableDefense.add(new StoneAndScore(new Stone(j, i), eval));
-//                    } else {
-//                        for (int k = 0; k < availableDefense.size(); k++) {
-//                            if (eval > availableDefense.get(k).score) {
-//                                availableDefense.add(k, new StoneAndScore(new Stone(j, i), eval));
-//                                break;
-//                            }
-//                        }
-//                        if (availableDefense.size() > MAX_BREATH) {
-//                            availableDefense.remove(MAX_BREATH);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        for (StoneAndScore stone1 : availableDefense) {
-//            ArrayList<StoneAndScore> availableDefenseDefense = new ArrayList<>();
-//            ArrayList<StoneAndScore> availableDefenseOffense = new ArrayList<>();
-//            int[][] boardCopy = new int[19][19];
-//            for (int i = 0; i < 19; i++) {
-//                System.arraycopy(board[i], 0, boardCopy[i], 0, 19);
-//            }
-//            boardCopy[stone1.stone.y][stone1.stone.x] = myColor;
-//            for (int i = 0; i < 19; i++) {
-//                for (int j = 0; j < 19; j++) {
-//                    if (boardCopy[i][j] == EMPTY) {
-//                        // Defense Defense
-//                        double evalDefense = getEvaluation(boardCopy, new Stone(j, i), enemyColor);
-//                        if (availableDefenseDefense.size() == 0) {
-//                            availableDefenseDefense.add(new StoneAndScore(new Stone(j, i), evalDefense));
-//                        } else {
-//                            for (int k = 0; k < availableDefenseDefense.size(); k++) {
-//                                if (evalDefense > availableDefenseDefense.get(k).score) {
-//                                    availableDefenseDefense.add(k, new StoneAndScore(new Stone(j, i), evalDefense));
-//                                    if (availableDefenseDefense.size() > MAX_BREATH) {
-//                                        availableDefenseDefense.remove(MAX_BREATH);
-//                                    }
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                        // Defense Offense
-//                        double evalOffense = getEvaluation(boardCopy, new Stone(j, i), myColor);
-//                        if (availableDefenseOffense.size() == 0) {
-//                            availableDefenseOffense.add(new StoneAndScore(new Stone(j, i), evalOffense));
-//                        } else {
-//                            for (int k = 0; k < availableDefenseOffense.size(); k++) {
-//                                if (evalDefense > availableDefenseOffense.get(k).score) {
-//                                    availableDefenseOffense.add(k, new StoneAndScore(new Stone(j, i), evalOffense));
-//                                    break;
-//                                }
-//                            }
-//                            if (availableDefenseOffense.size() > MAX_BREATH) {
-//                                availableDefenseOffense.remove(MAX_BREATH);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            for (StoneAndScore stone2 : availableDefenseDefense) {
-//                availableMoves.add(new Move(stone1.stone, stone2.stone));
-//            }
-//            for (StoneAndScore stone2 : availableDefenseOffense) {
-//                availableMoves.add(new Move(stone1.stone, stone2.stone));
-//            }
-//        }
-//
-//        // Offensive
-//        ArrayList<StoneAndScore> availableOffense = new ArrayList<>();
-//        for (int i = 0; i < 19; i++) {
-//            for (int j = 0; j < 19; j++) {
-//                if (board[i][j] == EMPTY) {
-//                    double eval = getEvaluation(board, new Stone(j, i), myColor);
-//                    if (availableOffense.size() == 0) {
-//                        availableOffense.add(new StoneAndScore(new Stone(j, i), eval));
-//                    } else {
-//                        for (int k = 0; k < availableOffense.size(); k++) {
-//                            if (eval > availableOffense.get(k).score) {
-//                                availableOffense.add(k, new StoneAndScore(new Stone(j, i), eval));
-//                                if (availableOffense.size() > MAX_BREATH) {
-//                                    availableOffense.remove(MAX_BREATH);
-//                                }
-//                                break;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        for (StoneAndScore stone1 : availableOffense) {
-//            ArrayList<StoneAndScore> availableOffenseDefense = new ArrayList<>();
-//            ArrayList<StoneAndScore> availableOffenseOffense = new ArrayList<>();
-//            int[][] boardCopy = new int[19][19];
-//            for (int i = 0; i < 19; i++) {
-//                System.arraycopy(board[i], 0, boardCopy[i], 0, 19);
-//            }
-//            boardCopy[stone1.stone.y][stone1.stone.x] = myColor;
-//            for (int i = 0; i < 19; i++) {
-//                for (int j = 0; j < 19; j++) {
-//                    if (boardCopy[i][j] == EMPTY) {
-//                        // Offense Defense
-//                        double evalDefense = getEvaluation(boardCopy, new Stone(j, i), enemyColor);
-//                        if (availableOffenseDefense.size() == 0) {
-//                            availableOffenseDefense.add(new StoneAndScore(new Stone(j, i), evalDefense));
-//                        } else {
-//                            for (int k = 0; k < availableOffenseDefense.size(); k++) {
-//                                if (evalDefense > availableOffenseDefense.get(k).score) {
-//                                    availableOffenseDefense.add(k, new StoneAndScore(new Stone(j, i), evalDefense));
-//                                    break;
-//                                }
-//                            }
-//                            if (availableOffenseDefense.size() > MAX_BREATH) {
-//                                availableOffenseDefense.remove(MAX_BREATH);
-//                            }
-//                        }
-//                        // Offense Offense
-//                        double evalOffense = getEvaluation(boardCopy, new Stone(j, i), myColor);
-//                        if (availableOffenseOffense.size() == 0) {
-//                            availableOffenseOffense.add(new StoneAndScore(new Stone(j, i), evalOffense));
-//                        } else {
-//                            for (int k = 0; k < availableOffenseOffense.size(); k++) {
-//                                if (evalDefense > availableOffenseOffense.get(k).score) {
-//                                    availableOffenseOffense.add(k, new StoneAndScore(new Stone(j, i), evalOffense));
-//                                    break;
-//                                }
-//                            }
-//                            if (availableOffenseOffense.size() > MAX_BREATH) {
-//                                availableOffenseOffense.remove(MAX_BREATH);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            for (StoneAndScore stone2 : availableOffenseDefense) {
-//                availableMoves.add(new Move(stone1.stone, stone2.stone));
-//            }
-//            for (StoneAndScore stone2 : availableOffenseOffense) {
-//                availableMoves.add(new Move(stone1.stone, stone2.stone));
-//            }
-//        }
-//
-//        if (availableMoves.size() == 0) {
-//            availableMoves.add(new Move(availableDefense.get(0).stone));
-//        }
-
-        //
         ArrayList<StoneAndScore> availableStonesDefense = new ArrayList<>();
         ArrayList<StoneAndScore> availableStonesOffense = new ArrayList<>();
         for (int i = 0; i < 19; i ++) {
@@ -584,7 +426,13 @@ public class NextDraw {
                     if (availableStonesDefense.size() == 0) {
                         availableStonesDefense.add(new StoneAndScore(new Stone(j, i), evalDefense));
                     } else {
-                        for (int k = 0; k < availableStonesDefense.size(); k++) {
+                        for (int k = 0; k < availableStonesDefense.size() + 1; k++) {
+                            if (k == availableStonesDefense.size()) {
+                                if (k < MAX_DEFENSE) {
+                                    availableStonesDefense.add(new StoneAndScore(new Stone(j, i), evalDefense));
+                                }
+                                break;
+                            }
                             if (evalDefense > availableStonesDefense.get(k).score) {
                                 availableStonesDefense.add(k, new StoneAndScore(new Stone(j, i), evalDefense));
                                 if (availableStonesDefense.size() > MAX_DEFENSE) {
@@ -597,7 +445,13 @@ public class NextDraw {
                     if (availableStonesOffense.size() == 0) {
                         availableStonesOffense.add(new StoneAndScore(new Stone(j, i), evalOffense));
                     } else {
-                        for (int k = 0; k < availableStonesOffense.size(); k++) {
+                        for (int k = 0; k < availableStonesOffense.size() + 1; k++) {
+                            if (k == availableStonesOffense.size()) {
+                                if (k < MAX_OFFENSE) {
+                                    availableStonesOffense.add(new StoneAndScore(new Stone(j, i), evalOffense));
+                                }
+                                break;
+                            }
                             if (evalOffense > availableStonesOffense.get(k).score) {
                                 availableStonesOffense.add(k, new StoneAndScore(new Stone(j, i), evalOffense));
                                 if (availableStonesOffense.size() > MAX_OFFENSE) {
@@ -614,56 +468,69 @@ public class NextDraw {
         availableStones.addAll(availableStonesDefense);
         availableStones.addAll(availableStonesOffense);
 
-//        int[][] boardCopy = new int[19][19];
-//        for (int i = 0; i < 19; i++) {
-//            System.arraycopy(board[i], 0, boardCopy[i], 0, 19);
+//        ArrayList<StoneAndScore> availableStones2 = new ArrayList<>();
+//        ArrayList<StoneAndScore> availableStones2_1 = new ArrayList<>();
+//        for (StoneAndScore stone1 : availableStones) {
+//            board[stone1.stone.y][stone1.stone.x] = myColor;
+//            for (int i = 0; i < 19; i++) {
+//                for (int j = 0; j < 19; j++) {
+//                    if (board[i][j] == EMPTY) {
+//                        double eval = getEvaluation(board, new Stone(j, i), myColor);
+//                        if (availableStones2.size() == 0) {
+//                            availableStones2.add(new StoneAndScore(new Stone(j, i), eval));
+//                        } else {
+//                            for (int k = 0; k < availableStones2.size() + 1; k++) {
+//                                if (k == availableStones2.size()) {
+//                                    if (k < MAX_BREATH) {
+//                                        availableStones2.add(new StoneAndScore(new Stone(j, i), eval));
+//                                    }
+//                                    break;
+//                                }
+//                                if (eval > availableStones2.get(k).score) {
+//                                    availableStones2.add(k, new StoneAndScore(new Stone(j, i), eval));
+//                                    if (availableStones2.size() > MAX_BREATH) {
+//                                        availableStones2.remove(MAX_BREATH);
+//                                    }
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                        double eval_1 = getEvaluation(board, new Stone(j, i), enemyColor);
+//                        if (availableStones2_1.size() == 0) {
+//                            availableStones2_1.add(new StoneAndScore(new Stone(j, i), eval_1));
+//                        } else {
+//                            for (int k = 0; k < availableStones2_1.size() + 1; k++) {
+//                                if (k == availableStones2_1.size()) {
+//                                    if (k < MAX_BREATH) {
+//                                        availableStones2_1.add(new StoneAndScore(new Stone(j, i), eval_1));
+//                                    }
+//                                    break;
+//                                }
+//                                if (eval_1 > availableStones2_1.get(k).score) {
+//                                    availableStones2_1.add(k, new StoneAndScore(new Stone(j, i), eval_1));
+//                                    if (availableStones2_1.size() > MAX_BREATH) {
+//                                        availableStones2_1.remove(MAX_BREATH);
+//                                    }
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            for (StoneAndScore stone2 : availableStones2) {
+//                availableMoves.add(new Move(stone1.stone, stone2.stone));
+//            }
+//            for (StoneAndScore stone2 : availableStones2_1) {
+//                availableMoves.add(new Move(stone1.stone, stone2.stone));
+//            }
+//            board[stone1.stone.y][stone1.stone.x] = EMPTY;
 //        }
-        ArrayList<StoneAndScore> availableStones2 = new ArrayList<>();
-        ArrayList<StoneAndScore> availableStones2_1 = new ArrayList<>();
-        for (StoneAndScore stone1 : availableStones) {
-            board[stone1.stone.y][stone1.stone.x] = myColor;
-            for (int i = 0; i < 19; i++) {
-                for (int j = 0; j < 19; j++) {
-                    if (board[i][j] == EMPTY) {
-//                        double eval = getEvaluation(board, new Stone(j, i), myColor) - getEvaluation(board, new Stone(j, i), enemyColor);
-                        double eval = getEvaluation(board, new Stone(j, i), myColor);
-                        if (availableStones2.size() == 0) {
-                            availableStones2.add(new StoneAndScore(new Stone(j, i), eval));
-                        } else {
-                            for (int k = 0; k < availableStones2.size(); k++) {
-                                if (eval > availableStones2.get(k).score) {
-                                    availableStones2.add(k, new StoneAndScore(new Stone(j, i), eval));
-                                    if (availableStones2.size() > MAX_BREATH) {
-                                        availableStones2.remove(MAX_BREATH);
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                        double eval_1 = getEvaluation(board, new Stone(j, i), enemyColor);
-                        if (availableStones2_1.size() == 0) {
-                            availableStones2_1.add(new StoneAndScore(new Stone(j, i), eval_1));
-                        } else {
-                            for (int k = 0; k < availableStones2_1.size(); k++) {
-                                if (eval_1 > availableStones2_1.get(k).score) {
-                                    availableStones2_1.add(k, new StoneAndScore(new Stone(j, i), eval_1));
-                                    if (availableStones2_1.size() > MAX_BREATH) {
-                                        availableStones2_1.remove(MAX_BREATH);
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
+
+        for (int i = 0; i < availableStones.size(); i++) {
+            for (int j = i + 1; j < availableStones.size(); j++) {
+                availableMoves.add(new Move(availableStones.get(i).stone, availableStones.get(j).stone));
             }
-            for (StoneAndScore stone2 : availableStones2) {
-                availableMoves.add(new Move(stone1.stone, stone2.stone));
-            }
-            for (StoneAndScore stone2 : availableStones2_1) {
-                availableMoves.add(new Move(stone1.stone, stone2.stone));
-            }
-            board[stone1.stone.y][stone1.stone.x] = EMPTY;
         }
 
         return availableMoves;
@@ -674,14 +541,14 @@ public class NextDraw {
         long[][] boardBitsCopy = new long[4][37];
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 19; j++) {
-                boardBitsCopy[i][j] = boardBits[i][j];
+                boardBitsCopy[i][j] = this.boardBits[i][j];
 //                System.out.println(Long.toBinaryString(boardBitsCopy[i][j]));
             }
 //            System.out.println();
         }
         for (int i = 2; i < 4; i++) {
             for (int j = 0; j < 37; j++) {
-                boardBitsCopy[i][j] = boardBits[i][j];
+                boardBitsCopy[i][j] = this.boardBits[i][j];
 //                System.out.println(Long.toBinaryString(boardBitsCopy[i][j]));
             }
 //            System.out.println();
@@ -756,19 +623,12 @@ public class NextDraw {
     }
 
     // the minimax algorithm
-    public double minimax(int[][] board, int depth, int turn) {
+    public double minimax(int[][] board, int depth, int turn, double alpha, double beta) {
         int gameResult = isGameOver(board);
 
         if (gameResult == myColor) {
             return Double.MAX_VALUE;
         } else if (gameResult == enemyColor) {
-//            for (int i = 0; i < 19; i++) {
-//                for (int j = 0; j < 19; j++) {
-//                    System.out.print(board[i][j] + " ");
-//                }
-//                System.out.println();
-//            }
-//            System.out.println();
             return -Double.MAX_VALUE;
         } else if (gameResult == DRAW) {
             return 0;
@@ -893,14 +753,15 @@ public class NextDraw {
                     }
                     board[winningShot.get(0).y][winningShot.get(0).x] = EMPTY;
                 }
-            }
-            if (turn == myColor) {
-                System.out.println(depth + " Find my Winning Shot");
                 return Double.MAX_VALUE;
-            } else {
-                System.out.println(depth + " Find Enemy's Winning Shot");
-                return -Double.MAX_VALUE;
             }
+//            if (turn == myColor) {
+//                System.out.println(depth + " Find my Winning Shot");
+//                return Double.MAX_VALUE;
+//            } else {
+//                System.out.println(depth + " Find Enemy's Winning Shot");
+//                return -Double.MAX_VALUE;
+//            }
         }
 //
 //        // Find Enemy's Winning Shot
@@ -937,90 +798,132 @@ public class NextDraw {
             return 0;
         }
 
-        double min = Double.MAX_VALUE, max = -Double.MAX_VALUE;
+//        double min = Double.MAX_VALUE, max = -Double.MAX_VALUE;
 
 //        int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
 //        ExecutorService executor = Executors.newFixedThreadPool(numOfCoresInMyCPU);
 
-        for (Move move : gameMovesAvailable) {
-//            int[][] boardCopy = new int[19][19];
-//            for (int i = 0; i < 19; i++)
-//                System.arraycopy(board[i], 0, boardCopy[i], 0, 19);
-            if (depth == 0) {
-                System.out.println("x1: " + move.stone1.x + " y1: " + move.stone1.y + " x2: " + move.stone2.x + " y2: " + move.stone2.y);
-            }
-
-            if (turn == myColor) {
-//                if (depth == 0) {
-//                    for (int i = 0; i < 19; i++) {
-//                        for (int j = 0; j < 19; j++) {
-//                            System.out.print(boardCopy[i][j] + " ");
-//                        }
-//                        System.out.println();
-//                    }
-//                    System.out.println();
+//        for (Move move : gameMovesAvailable) {
+//            if (depth == 0) {
+//                System.out.println("x1: " + move.stone1.x + " y1: " + move.stone1.y + " x2: " + move.stone2.x + " y2: " + move.stone2.y);
+//            }
+//
+//            if (turn == myColor) {
+//                board[move.stone1.y][move.stone1.x] = myColor;
+//                boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone1, myColor);
+//                if (move.stone2 != null) {
+//                    board[move.stone2.y][move.stone2.x] = myColor;
+//                    boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone2, myColor);
 //                }
+//                double currentScore = minimax(board, depth + 1, enemyColor);
+//
+//                board[move.stone1.y][move.stone1.x] = EMPTY;
+//                boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone1, EMPTY);
+//                if (move.stone2 != null) {
+//                    board[move.stone2.y][move.stone2.x] = EMPTY;
+//                    boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone2, EMPTY);
+//                }
+//                if (depth == 0) {
+//                    System.out.println("currentScore: " + currentScore);
+//                    if (currentScore >= max) {
+//                        max = currentScore;
+//                        if (nextMove == null) {
+//                            nextMove = new Move();
+//                        }
+//                        this.nextMove.stone1 = move.stone1;
+//                        this.nextMove.stone2 = move.stone2;
+//                    }
+//                }
+//                max = Math.max(currentScore, max);
+//            } else if (turn == enemyColor) {
+//                board[move.stone1.y][move.stone1.x] = enemyColor;
+//                boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone1, enemyColor);
+//                if (move.stone2 != null) {
+//                    board[move.stone2.y][move.stone2.x] = enemyColor;
+//                    boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone2, enemyColor);
+//                }
+//                double currentScore = minimax(board, depth + 1, myColor);
+//
+//                board[move.stone1.y][move.stone1.x] = EMPTY;
+//                boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone1, EMPTY);
+//                if (move.stone2 != null) {
+//                    board[move.stone2.y][move.stone2.x] = EMPTY;
+//                    boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone2, EMPTY);
+//                }
+//
+//                min = Math.min(currentScore, min);
+//            }
+//        }
+        if (turn == myColor) {
+            double bestScore = -Double.MAX_VALUE;
+            for (Move move : gameMovesAvailable) {
+                // Execute the move
                 board[move.stone1.y][move.stone1.x] = myColor;
                 boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone1, myColor);
                 if (move.stone2 != null) {
                     board[move.stone2.y][move.stone2.x] = myColor;
                     boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone2, myColor);
                 }
-//                if (depth == 0) {
-//                    for (int i = 0; i < 19; i++) {
-//                        for (int j = 0; j < 19; j++) {
-//                            System.out.print(boardCopy[i][j] + " ");
-//                        }
-//                        System.out.println();
-//                    }
-//                    System.out.println();
-//                    System.out.println();
-//                }
-                double currentScore = minimax(board, depth + 1, enemyColor);
-
+                // Calculate the score
+                double currentScore = minimax(board, depth + 1, enemyColor, alpha, beta);
+                bestScore = Math.max(bestScore, currentScore);
+                // Undo the move
                 board[move.stone1.y][move.stone1.x] = EMPTY;
                 boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone1, EMPTY);
                 if (move.stone2 != null) {
                     board[move.stone2.y][move.stone2.x] = EMPTY;
                     boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone2, EMPTY);
                 }
+                //
                 if (depth == 0) {
-//                    System.out.println("max: " + max);
-//                    System.out.println("gameResult: " + gameResult);
-                    System.out.println("currentScore: " + currentScore);
-                    if (currentScore >= max) {
-                        max = currentScore;
-                        if (nextMove == null) {
-                            nextMove = new Move();
-                        }
+//                    System.out.println("currentScore: " + currentScore);
+
+                    if (nextMove == null) {
+                        nextMove = new Move();
                         this.nextMove.stone1 = move.stone1;
                         this.nextMove.stone2 = move.stone2;
-//                        System.out.println("max: " + max);
-//                        System.out.println("nextMove.stone1: " + nextMove.stone1.x + " " + nextMove.stone1.y);
-//                        System.out.println("nextMove.stone2: " + nextMove.stone2.x + " " + nextMove.stone2.y);
+                    }
+                    if (currentScore > alpha) {
+                        alpha = currentScore;
+                        this.nextMove.stone1 = move.stone1;
+                        this.nextMove.stone2 = move.stone2;
                     }
                 }
-                max = Math.max(currentScore, max);
-            } else if (turn == enemyColor) {
+                // Beta cut-off
+                alpha = Math.max(alpha, bestScore);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            return bestScore;
+        } else { // Enemy's turn
+            double bestScore = Double.MAX_VALUE;
+            for (Move move : gameMovesAvailable) {
+                // Execute the move
                 board[move.stone1.y][move.stone1.x] = enemyColor;
                 boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone1, enemyColor);
                 if (move.stone2 != null) {
                     board[move.stone2.y][move.stone2.x] = enemyColor;
                     boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone2, enemyColor);
                 }
-                double currentScore = minimax(board, depth + 1, myColor);
-
+                // Calculate the score
+                double currentScore = minimax(board, depth + 1, myColor, alpha, beta);
+                bestScore = Math.min(bestScore, currentScore);
+                // Undo the move
                 board[move.stone1.y][move.stone1.x] = EMPTY;
                 boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone1, EMPTY);
                 if (move.stone2 != null) {
                     board[move.stone2.y][move.stone2.x] = EMPTY;
                     boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone2, EMPTY);
                 }
-
-                min = Math.min(currentScore, min);
+                // Alpha cut-off
+                beta = Math.min(beta, bestScore);
+                if (beta <= alpha) {
+                    break;
+                }
             }
+            return bestScore;
         }
-        return (turn == myColor) ? max : min;
     }
 
     private double getEvaluation(int[][] board, Stone stone, int myColor) {
