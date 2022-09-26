@@ -11,6 +11,10 @@ public class BoardBitsConverter {
         this.board = board;
     }
 
+    BoardBitsConverter(long[][] boardBits) {
+        this.boardBits = boardBits;
+    }
+
     public long[][] getBoardBits() {
 
         // head of line
@@ -95,5 +99,37 @@ public class BoardBitsConverter {
         boardBits[DIA_RTLB][x + y] = (boardBits[DIA_RTLB][x + y] & binRemover) | bin;
 
         return boardBits;
+    }
+
+    public long getSixStonesBits(long[][] boardBits, NextDraw.Stone stone, int dir) {
+        int x = stone.x;
+        int y = stone.y;
+        long bin = 0B0L;
+
+        switch (dir) {
+            case HORIZONTAL:
+                bin = boardBits[HORIZONTAL][y] >> 2 * (x + 1) & 0B111111111111L;
+                break;
+            case VERTICAL:
+                bin = boardBits[VERTICAL][x] >> 2 * (y + 1) & 0B111111111111L;
+                break;
+            case DIA_LTRB:
+                bin = boardBits[DIA_LTRB][x - y + 18];
+                if (x - y + 18 < 19) { // 0~18 Line
+                    bin = bin >> 2 * (x + 1) & 0B111111111111L;
+                } else { // 19~36 Line
+                    bin = bin >> 2 * (y + 1) & 0B111111111111L;
+                }
+                break;
+            case DIA_RTLB:
+                bin = boardBits[DIA_RTLB][x + y];
+                if (x + y < 19) { // 0~18 Line
+                    bin = bin >> 2 * (y + 1) & 0B111111111111L;
+                } else { // 19~36 Line
+                    bin = bin >> 2 * (18 - x + 1) & 0B111111111111L;
+                }
+                break;
+        }
+        return bin;
     }
 }
