@@ -17,7 +17,7 @@ public class NextDraw {
     public final static int MAX_DEPTH = 4;
     public final static int MAX_BREATH = 2;
     public final static int MAX_DEFENSE = 4;
-    public final static int MAX_OFFENSE = 4;
+    public final static int MAX_OFFENSE = 6;
 
     private int[][] board;
     BoardBitsConverter boardBitsConverter;
@@ -737,8 +737,10 @@ public class NextDraw {
                     int Y = threat.lineNum;
 
                     for (int i = 0; i < 7; i++) {
-                        if (board[Y][startX + checkOrder[i]] == EMPTY) {
-                            winningShot.add(new Stone(startX + checkOrder[i], Y));
+                        if (startX + checkOrder[i] >= 0 && startX + checkOrder[i] < 19) {
+                            if (board[Y][startX + checkOrder[i]] == EMPTY) {
+                                winningShot.add(new Stone(startX + checkOrder[i], Y));
+                            }
                         }
                     }
                 }
@@ -747,8 +749,10 @@ public class NextDraw {
                     int startY = threat.stoneNum;
 
                     for (int i = 0; i < 7; i++) {
-                        if (board[startY + checkOrder[i]][X] == EMPTY) {
-                            winningShot.add(new Stone(X, startY + checkOrder[i]));
+                        if (startY + checkOrder[i] >= 0 && startY + checkOrder[i] < 19) {
+                            if (board[startY + checkOrder[i]][X] == EMPTY) {
+                                winningShot.add(new Stone(X, startY + checkOrder[i]));
+                            }
                         }
                     }
                 }
@@ -763,8 +767,10 @@ public class NextDraw {
                     }
 
                     for (int i = 0; i < 7; i++) {
-                        if (board[startY + checkOrder[i]][startX + checkOrder[i]] == EMPTY) {
-                            winningShot.add(new Stone(startX + checkOrder[i], startY + checkOrder[i]));
+                        if (startY + checkOrder[i] >= 0 && startY + checkOrder[i] < 19 && startX + checkOrder[i] >= 0 && startX + checkOrder[i] < 19) {
+                            if (board[startY + checkOrder[i]][startX + checkOrder[i]] == EMPTY) {
+                                winningShot.add(new Stone(startX + checkOrder[i], startY + checkOrder[i]));
+                            }
                         }
                     }
                 }
@@ -779,8 +785,10 @@ public class NextDraw {
                     }
 
                     for (int i = 0; i < 7; i++) {
-                        if (board[startY + checkOrder[i]][startX - checkOrder[i]] == EMPTY) {
-                            winningShot.add(new Stone(startX - checkOrder[i], startY + checkOrder[i]));
+                        if (startY + checkOrder[i] >= 0 && startY + checkOrder[i] < 19 && startX + checkOrder[i] >= 0 && startX + checkOrder[i] < 19) {
+                            if (board[startY + checkOrder[i]][startX - checkOrder[i]] == EMPTY) {
+                                winningShot.add(new Stone(startX - checkOrder[i], startY + checkOrder[i]));
+                            }
                         }
                     }
                 }
@@ -1034,6 +1042,7 @@ public class NextDraw {
         for (int i = 0; i < 4; i++) { // dir
             boolean isFreeDir = true;
             BigDecimal evalDir = new BigDecimal("1");
+            int myStonesCount = 0;
             for (int j = 0; j < 2; j++) { // + or -
                 for (int k = 0; k < 5; k++) { // distance
                     int checkingX = stone.x + (k + 1) * dirMap[i][j][0];
@@ -1050,7 +1059,13 @@ public class NextDraw {
                         } else if (checkingStone == EMPTY) {
                             evalDir = evalDir.multiply(emptyWeight);
                         } else if (checkingStone == myColor) {
-                            evalDir = evalDir.multiply(weight[k]);
+                            myStonesCount++;
+                            if (myStonesCount < 5) {
+                                evalDir = evalDir.multiply(weight[k]);
+                            } else if (myStonesCount == 6){
+                                evalDir = evalDir.multiply(weight[k]);
+                                evalDir = evalDir.multiply(weight[k]);
+                            }
                         }
                     }
                 }
