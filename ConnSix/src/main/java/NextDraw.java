@@ -1,7 +1,6 @@
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class NextDraw {
     final static private int EMPTY = 0;
@@ -15,26 +14,20 @@ public class NextDraw {
     public final static int DRAW = 3;
     public final static int NOT_OVER = -1;
     public final static int MAX_DEPTH = 4;
-    public final static int MAX_BREATH = 2;
     public final static int MAX_DEFENSE = 4;
     public final static int MAX_OFFENSE = 6;
 
     private int[][] board;
     BoardBitsConverter boardBitsConverter;
     private long[][] boardBits;
-
     Stone[] lastDrawStones;
-
     private Move nextMove;
-
-    private List<Move> availableMoves;
     int myColor;
     int enemyColor;
 
     public static class Stone {
         public int x;
         public int y;
-
         Stone(int x, int y) {
             this.x = x;
             this.y = y;
@@ -44,15 +37,9 @@ public class NextDraw {
     public static class Move {
         Stone stone1;
         Stone stone2;
-
         Move(Stone stone1, Stone stone2) {
             this.stone1 = stone1;
             this.stone2 = stone2;
-        }
-
-        Move(Stone stone) {
-            this.stone1 = stone;
-            this.stone2 = null;
         }
         Move() {
             this.stone1 = null;
@@ -89,78 +76,10 @@ public class NextDraw {
         }
         boardBitsConverter = new BoardBitsConverter(board);
         boardBits = boardBitsConverter.getBoardBits();
-
-//        for (int i = 0; i < 2; i++) {
-//            for (int j = 0; j < 19; j++) {
-//                System.out.println(Long.toBinaryString(boardBits[i][j]));
-//            }
-//            System.out.println();
-//        }
-//        for (int i = 2; i < 4; i++) {
-//            for (int j = 0; j < 37; j++) {
-//                System.out.println(Long.toBinaryString(boardBits[i][j]));
-//            }
-//            System.out.println();
-//        }
     }
 
-//    public String getNextDraw() {
-//        BoardBitsConverter boardBitsConverter = new BoardBitsConverter(board);
-//        boardBits = boardBitsConverter.getBoardBits();
-//        ArrayList<Stone> nextDrawStones;
-//        String nextDrawString;
-//
-//        nextDrawStones = findMyWinningShot();
-//
-//        if (nextDrawStones != null) {
-//            // 7 --> H (7), 8 --> J (9)
-//            char stoneX = (nextDrawStones.get(0).x >= 8) ? (char) (nextDrawStones.get(0).x + 'A' + 1) : (char) (nextDrawStones.get(0).x + 'A');
-//            nextDrawString = String.format("%c%02d", stoneX, nextDrawStones.get(0).y + 1);
-//            if (nextDrawStones.get(1) != null) {
-//                stoneX = (nextDrawStones.get(1).x >= 8) ? (char) (nextDrawStones.get(1).x + 'A' + 1) : (char) (nextDrawStones.get(1).x + 'A');
-//                nextDrawString += String.format(":%c%02d", stoneX, nextDrawStones.get(1).y + 1);
-//            }
-//            System.out.println("This is Winning Shot");
-//            return nextDrawString;
-//        }
-//
-//        nextDrawStones = findMyBestDefenseDefense(board);
-//
-//        System.out.println("nextDrawStones: " + nextDrawStones.get(0).x + " " + nextDrawStones.get(0).y);
-//        System.out.println("nextDrawStones: " + nextDrawStones.get(1).x + " " + nextDrawStones.get(1).y);
-//
-//        // 7 --> H (7), 8 --> J (9)
-//        char stoneX = (nextDrawStones.get(0).x >= 8) ? (char) (nextDrawStones.get(0).x + 'A' + 1) : (char) (nextDrawStones.get(0).x + 'A');
-//        nextDrawString = String.format("%c%02d", stoneX, nextDrawStones.get(0).y + 1);
-//        if (nextDrawStones.get(1) != null) {
-//            stoneX = (nextDrawStones.get(1).x >= 8) ? (char) (nextDrawStones.get(1).x + 'A' + 1) : (char) (nextDrawStones.get(1).x + 'A');
-//            nextDrawString += String.format(":%c%02d", stoneX, nextDrawStones.get(1).y + 1);
-//        }
-//        return nextDrawString;
-//    }
-
     public String getNextDraw() {
-//        BoardBitsConverter boardBitsConverter = new BoardBitsConverter(board);
-//        boardBits = boardBitsConverter.getBoardBits();
-//        ArrayList<Stone> nextDrawStones;
         String nextDrawString;
-
-//        nextDrawStones = findMyWinningShot();
-
-//        if (nextDrawStones != null) {
-//            // 7 --> H (7), 8 --> J (9)
-//            char stoneX = (nextDrawStones.get(0).x >= 8) ? (char) (nextDrawStones.get(0).x + 'A' + 1) : (char) (nextDrawStones.get(0).x + 'A');
-//            nextDrawString = String.format("%c%02d", stoneX, nextDrawStones.get(0).y + 1);
-//            if (nextDrawStones.get(1) != null) {
-//                stoneX = (nextDrawStones.get(1).x >= 8) ? (char) (nextDrawStones.get(1).x + 'A' + 1) : (char) (nextDrawStones.get(1).x + 'A');
-//                nextDrawString += String.format(":%c%02d", stoneX, nextDrawStones.get(1).y + 1);
-//            }
-//            System.out.println("This is Winning Shot");
-//            return nextDrawString;
-//        }
-
-//        int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
-//        ExecutorService executor = Executors.newFixedThreadPool(numOfCoresInMyCPU);
 
         BigDecimal a = minimax(board, 0, myColor, BigDecimal.valueOf(-Double.MAX_VALUE), BigDecimal.valueOf(Double.MAX_VALUE));
         System.out.println("a: " + a);
@@ -180,236 +99,12 @@ public class NextDraw {
         return nextDrawString;
     }
 
-    private ArrayList<Stone> findMyWinningShot() {
-        // Windows Algorithm
-        ThreatDetector threatDetector = new ThreatDetector(boardBits, myColor, enemyColor);
-        ArrayList<ThreatDetector.Threat> threats = threatDetector.findCriticalThreat(boardBits, myColor);
-        ArrayList<Stone> winningShot = new ArrayList<>(2);
-        int[] checkOrder = {3, 4, 2, 5, 1, 6, 0};
-        // found my critical threat
-        if (threats != null) {
-//            ThreatDetector.Threat threat = threats.get(0);
-//            ArrayList<Stone> winningShot = new ArrayList<>(2);
-//            int[][] dirMap = {{1, 0}, {0, 1}, {1, 1}, {1, -1}, {-1, 0}, {0, -1}, {-1, -1}, {-1, 1}};
-//            int startX = -1, endX = 19, startY = -1, endY = 19;
-//
-//            switch (threat.dir) {
-//                case HORIZONTAL -> {
-//                    startX = threat.stoneNum;
-//                    endX = threat.stoneNum + 6;
-//                    startY = threat.lineNum;
-//                    endY = threat.lineNum;
-//
-//
-//                }
-//                case VERTICAL -> {
-//                    startX = threat.lineNum;
-//                    endX = threat.lineNum;
-//                    startY = threat.stoneNum;
-//                    endY = threat.stoneNum + 6;
-//                }
-//                case DIA_LTRB -> {
-//                    if (threat.lineNum < 19) {
-//                        startX = threat.stoneNum;
-//                        endX = threat.stoneNum + 6;
-//                        startY = 18 - threat.lineNum + threat.stoneNum;
-//                        endY = 18 - threat.lineNum + threat.stoneNum + 6;
-//                    } else {
-//                        startX = threat.lineNum - 18 + threat.stoneNum;
-//                        endX = threat.lineNum - 18 + threat.stoneNum + 6;
-//                        startY = threat.stoneNum;
-//                        endY = threat.stoneNum + 6;
-//                    }
-//                }
-//                case DIA_RTLB -> {
-//                    if (threat.lineNum < 19) {
-//                        startX = threat.lineNum - threat.stoneNum;
-//                        endX = threat.lineNum - (threat.stoneNum + 6);
-//                        startY = threat.stoneNum;
-//                        endY = threat.stoneNum + 6;
-//                    } else {
-//                        startX = 18 - threat.stoneNum;
-//                        endX = 18 - (threat.stoneNum + 6);
-//                        startY = threat.lineNum - 18 + threat.stoneNum;
-//                        endY = threat.lineNum - 18 + threat.stoneNum + 6;
-//                    }
-//                }
-//            }
-            ThreatDetector.Threat threat = threats.get(0);
-            switch (threat.dir) {
-                case HORIZONTAL -> {
-                    int startX = threat.stoneNum;
-                    int Y = threat.lineNum;
-
-                    for (int i = 0; i < 7; i++) {
-                        if (board[Y][startX + checkOrder[i]] == EMPTY) {
-                            winningShot.add(new Stone(startX + checkOrder[i], Y));
-                        }
-                    }
-                }
-                case VERTICAL -> {
-                    int X = threat.lineNum;
-                    int startY = threat.stoneNum;
-
-                    for (int i = 0; i < 7; i++) {
-                        if (board[startY + checkOrder[i]][X] == EMPTY) {
-                            winningShot.add(new Stone(X, startY + checkOrder[i]));
-                        }
-                    }
-                }
-                case DIA_LTRB -> {
-                    int startX, startY;
-                    if (threat.lineNum < 19) {
-                        startX = threat.stoneNum;
-                        startY = 18 - threat.lineNum + threat.stoneNum;
-                    } else {
-                        startX = threat.lineNum - 18 + threat.stoneNum;
-                        startY = threat.stoneNum;
-                    }
-
-                    for (int i = 0; i < 7; i++) {
-                        if (board[startY + checkOrder[i]][startX + checkOrder[i]] == EMPTY) {
-                            winningShot.add(new Stone(startX + checkOrder[i], startY + checkOrder[i]));
-                        }
-                    }
-                }
-                case DIA_RTLB -> {
-                    int startX, startY;
-                    if (threat.lineNum < 19) {
-                        startX = threat.lineNum - threat.stoneNum;
-                        startY = threat.stoneNum;
-                    } else {
-                        startX = 18 - threat.stoneNum;
-                        startY = threat.lineNum - 18 + threat.stoneNum;
-                    }
-
-                    for (int i = 0; i < 7; i++) {
-                        if (board[startY + checkOrder[i]][startX - checkOrder[i]] == EMPTY) {
-                            winningShot.add(new Stone(startX - checkOrder[i], startY + checkOrder[i]));
-                        }
-                    }
-                }
-            }
-            if (winningShot.size() != 2) {
-                board[winningShot.get(0).y][winningShot.get(0).x] = myColor;
-                for (int i = 0; i < 19; i++) {
-                    for (int j = 0; j < 19; j++) {
-                        if (board[i][j] == EMPTY) {
-                            winningShot.add(new Stone(i, j));
-                            return winningShot;
-                        }
-                    }
-                }
-            }
-            return winningShot;
-        }
-        // there isn't critical threat
-        return null;
-    }
-
-//    private ArrayList<Stone> findEnemyWinningShot() {
-//        ThreatDetector threatDetector = new ThreatDetector(boardBits, enemyColor, myColor);
-//        ArrayList<ThreatDetector.Threat> threats = threatDetector.findCriticalThreat(boardBits, enemyColor);
-//
-//        // found enemy's critical threat
-//        if (threats != null) {
-//            for (ThreatDetector.Threat threat : threats) {
-//                switch (threat.dir) {
-//                    case HORIZONTAL:
-//                        long boardBitsOneLine = boardBits[threat.dir][threat.y];
-//
-//                        int threatStartX = Math.max(threat.x - 2, 0);
-//                        int threatEndX = Math.min(threat.x + 6 + 2, 18);
-//
-//                        for (int i = threatStartX; i <= threatEndX; i++) {
-//                            int stone
-//                        }
-//                }
-//            }
-//        }
-//    }
-
-    private ArrayList<Stone> findMyBestDefenseDefense(int[][] board) {
-
-        for (int i = 0; i < 19; i++) {
-            for (int j = 0; j < 19; j++) {
-                System.out.print(board[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-
-        ArrayList<Stone> availableDefense = new ArrayList<>();
-        int minX = 0, maxX = 18, minY = 0, maxY = 18;
-//        for (Stone stone : lastDrawStones) {
-//            if (stone.x < minX)
-//                minX = stone.x;
-//            if (stone.x > maxX)
-//                maxX = stone.x;
-//            if (stone.y < minY)
-//                minY = stone.y;
-//            if (stone.y > maxY)
-//                maxY = stone.y;
-//        }
-//
-//        minX = Math.max(0, minX - 19);
-//        minY = Math.max(0, minY - 19);
-//        maxX = Math.min(18, maxX + 19);
-//        maxY = Math.min(18, maxY + 19);
-
-        for (int i = minY; i <= maxY; i++) {
-            for (int j = minX; j <= maxX; j++) {
-                if (board[i][j] == EMPTY) {
-                    availableDefense.add(new Stone(j, i));
-                }
-            }
-        }
-
-        ArrayList<Stone> bestDefense = new ArrayList<>();
-        BigDecimal maxScore = new BigDecimal("0");
-        Stone maxScoreStone = null;
-
-        for (Stone stone : availableDefense) {
-            BigDecimal eval = getEvaluation(board, stone, enemyColor);
-            if (eval.compareTo(maxScore) > 0) {
-                maxScore = eval;
-                maxScoreStone = stone;
-            }
-        }
-
-        bestDefense.add(maxScoreStone);
-        availableDefense.remove(maxScoreStone);
-        board[Objects.requireNonNull(maxScoreStone).y][maxScoreStone.x] = myColor;
-
-        maxScore = new BigDecimal("0");
-        maxScoreStone = null;
-        for (Stone stone : availableDefense) {
-            BigDecimal eval = getEvaluation(board, stone, enemyColor);
-            if (eval.compareTo(maxScore) > 0) {
-                maxScore = eval;
-                maxScoreStone = stone;
-            }
-        }
-        bestDefense.add(maxScoreStone);
-
-        return bestDefense;
-    }
-
-//    private ArrayList<Stone> findMyBestOffense() {
-//
-//    }
-
     public List<Move> getAvailableMoves(int[][] board, int color, int depth) {
         int myColor = color;
         int enemyColor = (color == BLACK) ? WHITE : BLACK;
         class StoneAndScore {
             Stone stone;
             BigDecimal score;
-
-            public StoneAndScore(StoneAndScore stoneAndScore) {
-                this.stone = stoneAndScore.stone;
-                this.score = stoneAndScore.score;
-            }
             public StoneAndScore(Stone stone, BigDecimal score) {
                 this.stone = stone;
                 this.score = score;
@@ -450,7 +145,7 @@ public class NextDraw {
                                     break;
                                 }
                             }
-                         }
+                        }
                     }
 
                     if (availableStonesOffense.size() == 0) {
@@ -483,74 +178,6 @@ public class NextDraw {
                 }
             }
         }
-//        ArrayList<StoneAndScore> availableStones = new ArrayList<>();
-//        availableStones.addAll(availableStonesDefense);
-//        availableStones.addAll(availableStonesOffense);
-
-//        ArrayList<StoneAndScore> availableStones2 = new ArrayList<>();
-//        ArrayList<StoneAndScore> availableStones2_1 = new ArrayList<>();
-//        for (StoneAndScore stone1 : availableStones) {
-//            board[stone1.stone.y][stone1.stone.x] = myColor;
-//            for (int i = 0; i < 19; i++) {
-//                for (int j = 0; j < 19; j++) {
-//                    if (board[i][j] == EMPTY) {
-//                        double eval = getEvaluation(board, new Stone(j, i), myColor);
-//                        if (availableStones2.size() == 0) {
-//                            availableStones2.add(new StoneAndScore(new Stone(j, i), eval));
-//                        } else {
-//                            for (int k = 0; k < availableStones2.size() + 1; k++) {
-//                                if (k == availableStones2.size()) {
-//                                    if (k < MAX_BREATH) {
-//                                        availableStones2.add(new StoneAndScore(new Stone(j, i), eval));
-//                                    }
-//                                    break;
-//                                }
-//                                if (eval > availableStones2.get(k).score) {
-//                                    availableStones2.add(k, new StoneAndScore(new Stone(j, i), eval));
-//                                    if (availableStones2.size() > MAX_BREATH) {
-//                                        availableStones2.remove(MAX_BREATH);
-//                                    }
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                        double eval_1 = getEvaluation(board, new Stone(j, i), enemyColor);
-//                        if (availableStones2_1.size() == 0) {
-//                            availableStones2_1.add(new StoneAndScore(new Stone(j, i), eval_1));
-//                        } else {
-//                            for (int k = 0; k < availableStones2_1.size() + 1; k++) {
-//                                if (k == availableStones2_1.size()) {
-//                                    if (k < MAX_BREATH) {
-//                                        availableStones2_1.add(new StoneAndScore(new Stone(j, i), eval_1));
-//                                    }
-//                                    break;
-//                                }
-//                                if (eval_1 > availableStones2_1.get(k).score) {
-//                                    availableStones2_1.add(k, new StoneAndScore(new Stone(j, i), eval_1));
-//                                    if (availableStones2_1.size() > MAX_BREATH) {
-//                                        availableStones2_1.remove(MAX_BREATH);
-//                                    }
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            for (StoneAndScore stone2 : availableStones2) {
-//                availableMoves.add(new Move(stone1.stone, stone2.stone));
-//            }
-//            for (StoneAndScore stone2 : availableStones2_1) {
-//                availableMoves.add(new Move(stone1.stone, stone2.stone));
-//            }
-//            board[stone1.stone.y][stone1.stone.x] = EMPTY;
-//        }
-
-//        for (int i = 0; i < availableStones.size(); i++) {
-//            for (int j = i + 1; j < availableStones.size(); j++) {
-//                availableMoves.add(new Move(availableStones.get(i).stone, availableStones.get(j).stone));
-//            }
-//        }
 
         // Defense-Defense
         for (int i = 0; i < availableStonesDefense.size(); i++) {
@@ -604,26 +231,22 @@ public class NextDraw {
     }
 
     private int isGameOver(int[][] board) {
-//        System.out.println("A");
         long[][] boardBitsCopy = new long[4][37];
         for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 19; j++) {
-                boardBitsCopy[i][j] = this.boardBits[i][j];
-//                System.out.println(Long.toBinaryString(boardBitsCopy[i][j]));
-            }
-//            System.out.println();
+//            for (int j = 0; j < 19; j++) {
+//                boardBitsCopy[i][j] = this.boardBits[i][j];
+//            }
+            System.arraycopy(this.boardBits[i], 0, boardBitsCopy[i], 0, 19);
         }
         for (int i = 2; i < 4; i++) {
-            for (int j = 0; j < 37; j++) {
-                boardBitsCopy[i][j] = this.boardBits[i][j];
-//                System.out.println(Long.toBinaryString(boardBitsCopy[i][j]));
-            }
-//            System.out.println();
+//            for (int j = 0; j < 37; j++) {
+//                boardBitsCopy[i][j] = this.boardBits[i][j];
+//            }
+            System.arraycopy(this.boardBits[i], 0, boardBitsCopy[i], 0, 37);
         }
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 19; j++) {
-//                System.out.println(Long.toBinaryString(boardBitsCopy[i][j]));
                 while (boardBitsCopy[i][j] != RED) {
                     if ((boardBitsCopy[i][j] & 0B111111111111L) == 0B010101010101L) {
                         return BLACK;
@@ -637,7 +260,6 @@ public class NextDraw {
         }
         for (int i = 2; i < 4; i++) {
             for (int j = 0; j < 37; j++) {
-//                System.out.println(Long.toBinaryString(boardBitsCopy[i][j]));
                 while (boardBitsCopy[i][j] != RED) {
                     if ((boardBitsCopy[i][j] & 0B111111111111L) == 0B010101010101L) {
                         return BLACK;
@@ -649,21 +271,6 @@ public class NextDraw {
                 }
             }
         }
-
-        //
-//        System.out.println("B");
-//        for (int i = 0; i < 2; i++) {
-//            for (int j = 0; j < 19; j++) {
-//                System.out.println(Long.toBinaryString(boardBits[i][j]));
-//            }
-//            System.out.println();
-//        }
-//        for (int i = 2; i < 4; i++) {
-//            for (int j = 0; j < 37; j++) {
-//                System.out.println(Long.toBinaryString(boardBits[i][j]));
-//            }
-//            System.out.println();
-//        }
 
         for (int i = 0; i < 19; i++) {
             for (int j = 0; j < 19; j++) {
@@ -793,21 +400,6 @@ public class NextDraw {
                     }
                 }
             }
-//            if (winningShot.size() != 2) {
-//                board[winningShot.get(0).y][winningShot.get(0).x] = RED;
-//                for (int i = 0; i < 19; i++) {
-//                    for (int j = 0; j < 19; j++) {
-//                        if (board[i][j] == EMPTY) {
-//                            winningShot.add(new Stone(i, j));
-//                            break;
-//                        }
-//                    }
-//                    if (winningShot.size() == 2) {
-//                        break;
-//                    }
-//                }
-//                board[winningShot.get(0).y][winningShot.get(0).x] = EMPTY;
-//            }
         }
 
         // there isn't critical threat
@@ -848,97 +440,12 @@ public class NextDraw {
                 return BigDecimal.valueOf(-Double.MAX_VALUE);
             }
         }
-//
-//        // Find Enemy's Winning Shot
-//        int patternNum = 0;
-//        if (turn == myColor) {
-//            threatDetector = new ThreatDetector(boardBits, enemyColor, myColor);
-//            patternNum = threatDetector.findCriticalThreatAndReturnPatternNum(boardBits, enemyColor);
-//        } else {
-//            threatDetector = new ThreatDetector(boardBits, myColor, enemyColor);
-//            patternNum = threatDetector.findCriticalThreatAndReturnPatternNum(boardBits, myColor);
-//        }
-//        if (patternNum != -1) {
-//            if (patternNum < 6) {
-//                double maxEval = -Double.MAX_VALUE;
-//                for (int i = 0; i < 19; i++) {
-//                    for (int j = 0; j < 19; j++) {
-//                        if (board[i][j] == EMPTY) {
-//                            double eval = getEvaluation(board, new Stone(j, i), (turn == BLACK) ? WHITE : BLACK);
-//                            maxEval = Math.max(maxEval, eval);
-//
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        // Found Enemy's Critical Threat
-//        if (threats != null) {
-//
-//        }
 
         List<Move> gameMovesAvailable = getAvailableMoves(board, turn, depth);
         if (gameMovesAvailable.isEmpty()) {
             return new BigDecimal("0");
         }
 
-//        double min = Double.MAX_VALUE, max = -Double.MAX_VALUE;
-
-//        int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
-//        ExecutorService executor = Executors.newFixedThreadPool(numOfCoresInMyCPU);
-
-//        for (Move move : gameMovesAvailable) {
-//            if (depth == 0) {
-//                System.out.println("x1: " + move.stone1.x + " y1: " + move.stone1.y + " x2: " + move.stone2.x + " y2: " + move.stone2.y);
-//            }
-//
-//            if (turn == myColor) {
-//                board[move.stone1.y][move.stone1.x] = myColor;
-//                boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone1, myColor);
-//                if (move.stone2 != null) {
-//                    board[move.stone2.y][move.stone2.x] = myColor;
-//                    boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone2, myColor);
-//                }
-//                double currentScore = minimax(board, depth + 1, enemyColor);
-//
-//                board[move.stone1.y][move.stone1.x] = EMPTY;
-//                boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone1, EMPTY);
-//                if (move.stone2 != null) {
-//                    board[move.stone2.y][move.stone2.x] = EMPTY;
-//                    boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone2, EMPTY);
-//                }
-//                if (depth == 0) {
-//                    System.out.println("currentScore: " + currentScore);
-//                    if (currentScore >= max) {
-//                        max = currentScore;
-//                        if (nextMove == null) {
-//                            nextMove = new Move();
-//                        }
-//                        this.nextMove.stone1 = move.stone1;
-//                        this.nextMove.stone2 = move.stone2;
-//                    }
-//                }
-//                max = Math.max(currentScore, max);
-//            } else if (turn == enemyColor) {
-//                board[move.stone1.y][move.stone1.x] = enemyColor;
-//                boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone1, enemyColor);
-//                if (move.stone2 != null) {
-//                    board[move.stone2.y][move.stone2.x] = enemyColor;
-//                    boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone2, enemyColor);
-//                }
-//                double currentScore = minimax(board, depth + 1, myColor);
-//
-//                board[move.stone1.y][move.stone1.x] = EMPTY;
-//                boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone1, EMPTY);
-//                if (move.stone2 != null) {
-//                    board[move.stone2.y][move.stone2.x] = EMPTY;
-//                    boardBits = boardBitsConverter.stoneToBoardBits(boardBits, move.stone2, EMPTY);
-//                }
-//
-//                min = Math.min(currentScore, min);
-//            }
-//        }
         if (turn == myColor) {
             BigDecimal bestScore = BigDecimal.valueOf(-Double.MAX_VALUE);
             for (Move move : gameMovesAvailable) {
@@ -1062,9 +569,8 @@ public class NextDraw {
                             myStonesCount++;
                             if (myStonesCount < 5) {
                                 evalDir = evalDir.multiply(weight[k]);
-                            } else if (myStonesCount == 6){
-                                evalDir = evalDir.multiply(weight[k]);
-                                evalDir = evalDir.multiply(weight[k]);
+                            } else if (myStonesCount == 5){
+                                evalDir = evalDir.multiply(new BigDecimal("1"));
                             }
                         }
                     }
@@ -1138,22 +644,10 @@ public class NextDraw {
                         }
                         ret = true;
                     } else if ((sixStonesBits & 0B111111111111L) == (sixStonesPattern[myColor] & 0B111111111111L)) {
-                        ret = false;
-                        return ret;
+                        return false;
                     }
                 }
             }
-            // Get the Six-in-row stones
-//            long sixStonesBits = tempBitsConverter.getSixStonesBits(boardBits, stone, i);
-//            for (long pattern : fiveStonesPattern[myColor]) {
-//                if ((sixStonesBits & 0B111111111111L) == (pattern & 0B111111111111L)) {
-//                    if (depth == 0) {
-//                        System.out.println("stone: " + stone.x + " " + stone.y + " p: " + Long.toBinaryString(pattern));
-//                    }
-//                    return true;
-//                }
-////                System.out.println("p: " + Long.toBinaryString(pattern));
-//            }
         }
 
         return ret;
