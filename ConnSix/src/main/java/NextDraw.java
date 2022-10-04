@@ -550,6 +550,7 @@ public class NextDraw {
             boolean isFreeDir = true;
             BigDecimal evalDir = new BigDecimal("1");
             int myStonesCount = 0;
+            int myAreaCount = 1;
             for (int j = 0; j < 2; j++) { // + or -
                 for (int k = 0; k < 5; k++) { // distance
                     int checkingX = stone.x + (k + 1) * dirMap[i][j][0];
@@ -565,16 +566,22 @@ public class NextDraw {
                             break;
                         } else if (checkingStone == EMPTY) {
                             evalDir = evalDir.multiply(emptyWeight);
+                            myAreaCount++;
                         } else if (checkingStone == myColor) {
                             myStonesCount++;
+                            myAreaCount++;
                             if (myStonesCount < 5) {
                                 evalDir = evalDir.multiply(weight[k]);
-                            } else if (myStonesCount == 5){
-                                evalDir = evalDir.multiply(new BigDecimal("1"));
+                            } else if (myStonesCount == 6){
+                                evalDir = evalDir.multiply(weight[k]);
+                                evalDir = evalDir.multiply(weight[k]);
                             }
                         }
                     }
                 }
+            }
+            if (myAreaCount <= 5) {
+                evalDir = evalDir.multiply(new BigDecimal("0"));
             }
             eval = eval.add(evalDir);
             if (isFreeDir == false) {
