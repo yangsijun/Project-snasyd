@@ -82,7 +82,7 @@ public class NextDraw {
         String nextDrawString;
 
         BigDecimal a = minimax(board, 0, myColor, BigDecimal.valueOf(-Double.MAX_VALUE), BigDecimal.valueOf(Double.MAX_VALUE));
-        System.out.println("a: " + a);
+//        System.out.println("a: " + a);
 
         System.out.println("nextDrawStones: " + nextMove.stone1.x + " " + nextMove.stone1.y);
         if (nextMove.stone2 != null) {
@@ -221,9 +221,9 @@ public class NextDraw {
         }
 
         if (depth == 0) {
-            System.out.println("Available Moves");
+//            System.out.println("Available Moves");
             for (Move move : availableMoves) {
-                System.out.println(move.stone1.x + " " + move.stone1.y + " " + move.stone2.x + " " + move.stone2.y);
+//                System.out.println(move.stone1.x + " " + move.stone1.y + " " + move.stone2.x + " " + move.stone2.y);
             }
         }
 
@@ -433,10 +433,10 @@ public class NextDraw {
                 return BigDecimal.valueOf(Double.MAX_VALUE);
             }
             if (turn == myColor) {
-                System.out.println(depth + " Find my Winning Shot");
+//                System.out.println(depth + " Find my Winning Shot");
                 return BigDecimal.valueOf(Double.MAX_VALUE);
             } else {
-                System.out.println(depth + " Find Enemy's Winning Shot");
+//                System.out.println(depth + " Find Enemy's Winning Shot");
                 return BigDecimal.valueOf(-Double.MAX_VALUE);
             }
         }
@@ -647,7 +647,7 @@ public class NextDraw {
                 for (long pattern : fiveStonesPattern[myColor]) {
                     if ((sixStonesBits & 0B111111111111L) == (pattern & 0B111111111111L)) {
                         if (depth == 0) {
-                            System.out.println("stone: " + stone.x + " " + stone.y + " p: " + Long.toBinaryString(pattern));
+//                            System.out.println("stone: " + stone.x + " " + stone.y + " p: " + Long.toBinaryString(pattern));
                         }
                         ret = true;
                     } else if ((sixStonesBits & 0B111111111111L) == (sixStonesPattern[myColor] & 0B111111111111L)) {
